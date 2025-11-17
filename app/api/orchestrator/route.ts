@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
-import { ScriptureConfig, VerseReference, ApiResponse } from '@/lib/types'
 import { SCRIPTURES_CONFIG, detectScripture } from '@/lib/scriptures-config'
+import { ScriptureConfig, VerseReference, ApiResponse } from '@/lib/types'
 
 export async function POST(request: NextRequest) {
   try {
