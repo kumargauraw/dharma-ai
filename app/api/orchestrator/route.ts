@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
-import { SCRIPTURES_CONFIG, detectScripture, parseReference } from '@/lib/scriptures-config'
 import { ScriptureConfig, VerseReference, ApiResponse } from '@/lib/types'
 
 
@@ -11,7 +10,7 @@ export async function POST(request: NextRequest) {
 
     const scriptureId = detectScripture(query)
     const config = SCRIPTURES_CONFIG[scriptureId]
-    const classification = await classifyQuery(query, scriptureId) // ADD await here
+    const classification = await classifyQuery(query) // ADD await here
 
     
     let response
@@ -48,7 +47,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function classifyQuery(query: string, scriptureId: string) {
+async function classifyQuery(query: string) {
   // Quick checks for obvious exact references first (to save API calls)
   const simpleRefPattern = /^(\d+)[\.:]\s*(\d+)$/
   const match = query.trim().match(simpleRefPattern)
