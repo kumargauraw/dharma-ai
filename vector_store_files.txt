@@ -1,0 +1,27 @@
+Bhagavad Gita Vector Store Files
+======================================================================
+
+Name: Bhagavad Gita - Sanskrit Verses (All 700)
+Type: verses
+URI: https://generativelanguage.googleapis.com/v1beta/files/pkbw37ge63wi
+File Name: files/pkbw37ge63wi
+----------------------------------------------------------------------
+
+Name: Bhagavad Gita - Hindi Meanings (All 700)
+Type: meanings
+URI: https://generativelanguage.googleapis.com/v1beta/files/kdl8iqfkircc
+File Name: files/kdl8iqfkircc
+----------------------------------------------------------------------
+
+Name: Madhvacharya - Gita Bhashya (Dvaita)
+Type: commentary
+URI: https://generativelanguage.googleapis.com/v1beta/files/489fpg1f2d0w
+File Name: files/489fpg1f2d0w
+----------------------------------------------------------------------
+
+Name: Adi Shankaracharya - Gita Bhashya (Advaita)
+Type: commentary
+URI: https://generativelanguage.googleapis.com/v1beta/files/w6vq2vigqz7z
+File Name: files/w6vq2vigqz7z
+----------------------------------------------------------------------
+

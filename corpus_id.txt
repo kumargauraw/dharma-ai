@@ -1,0 +1,2 @@
+CORPUS_ID=bhagavad-gita-complete-corp-91kxykxs536w
+CORPUS_NAME=corpora/bhagavad-gita-complete-corp-91kxykxs536w

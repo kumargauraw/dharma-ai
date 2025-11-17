@@ -1,101 +1,163 @@
-import Image from "next/image";
+'use client'
+
+import { useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
+import { VerseResult } from '@/components/VerseResult'
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [query, setQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [result, setResult] = useState<{
+    scripture: string
+    queryType: string
+    response: string
+    error?: string
+  } | null>(null)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleSubmit = async () => {
+    setIsLoading(true)
+    setResult(null)
+    
+    try {
+      const response = await fetch('/api/orchestrator', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query })
+      })
+
+      const data = await response.json()
+      setResult(data)
+    } catch (error) {
+      console.error('Error:', error)
+      setResult({ 
+        scripture: '',
+        queryType: '',
+        response: '',
+        error: 'Failed to process query' 
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
+      <div className="max-w-5xl mx-auto px-4 py-12">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="text-6xl mb-4">🕉️</div>
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-2">
+            Dharma AI
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Comprehensive Knowledge of Hindu Shastras
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        {/* Main Input Card */}
+        <Card className="shadow-xl border-orange-100 mb-6">
+          <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 border-b">
+            <CardTitle className="text-2xl text-orange-900">
+              Ask Anything
+            </CardTitle>
+            <CardDescription className="text-orange-700">
+              Search verses, lookup references, or ask spiritual questions
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-6">
+            {/* Language Support Banner */}
+            <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">🌐</div>
+                <div>
+                  <p className="font-semibold text-blue-900 mb-1">
+                    Ask in Your Language
+                  </p>
+                  <p className="text-sm text-blue-700">
+                    Type in Hindi, English, Sanskrit, Tamil, Telugu, or any language - I respond in the same language!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Input Area */}
+            <div className="space-y-4">
+              <Textarea
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Examples:
+- कर्मण्येवाधिकारस्ते (search for verse)
+- 2.47 or Chapter 2, Verse 47 (exact lookup)
+- What does Krishna say about dharma? (ask question)"
+                className="min-h-[150px] text-base"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.ctrlKey && query.trim()) {
+                    handleSubmit()
+                  }
+                }}
+              />
+              
+              <Button 
+                onClick={handleSubmit}
+                disabled={!query.trim() || isLoading}
+                className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-lg py-6"
+              >
+                {isLoading ? 'Processing...' : 'Search / Ask (Ctrl+Enter)'}
+              </Button>
+            </div>
+
+            {/* Examples */}
+            {!result && (
+              <Card className="mt-6 bg-blue-50 border-blue-200">
+                <CardContent className="pt-6">
+                  <p className="text-sm font-medium text-blue-900 mb-3">
+                    💡 Try these examples:
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <button
+                      onClick={() => setQuery('2.47')}
+                      className="block w-full text-left px-3 py-2 rounded hover:bg-blue-100 text-blue-800"
+                    >
+                      <strong>Exact Reference:</strong> 2.47 or BG 2:47
+                    </button>
+                    <button
+                      onClick={() => setQuery('कर्मण्येवाधिकारस्ते')}
+                      className="block w-full text-left px-3 py-2 rounded hover:bg-blue-100 text-blue-800"
+                    >
+                      <strong>Search Verse:</strong> कर्मण्येवाधिकारस्ते
+                    </button>
+                    <button
+                      onClick={() => setQuery('What does Krishna say about dharma?')}
+                      className="block w-full text-left px-3 py-2 rounded hover:bg-blue-100 text-blue-800"
+                    >
+                      <strong>Ask Question:</strong> What does Krishna say about dharma?
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Results */}
+        {result && !result.error && (
+          <VerseResult
+            scripture={result.scripture}
+            queryType={result.queryType}
+            response={result.response}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+        )}
+
+        {result && result.error && (
+          <Card className="shadow-xl border-red-100">
+            <CardContent className="pt-6">
+              <div className="text-red-600">{result.error}</div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </main>
+  )
 }
