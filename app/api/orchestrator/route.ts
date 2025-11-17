@@ -261,7 +261,7 @@ Provide a well-structured answer from ${config.name} following this format:
 - **Explanation:** [What this verse teaches]
 
 ## Deeper Understanding
-[Connect the verses and provide deeper insights]
+[Quote actual verses while offering deeper understanding, connect the verses and provide deeper insights]
 
 Use markdown formatting with:
 - ## for main headings
