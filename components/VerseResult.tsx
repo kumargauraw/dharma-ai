@@ -145,7 +145,7 @@ export function VerseResult({ scripture, queryType, response }: VerseResultProps
 
         {/* General Response (for questions) */}
         {sections.general && (
-          <div className="prose max-w-none">
+          <div className="prose prose-lg max-w-none prose-headings:text-orange-900 prose-h2:text-2xl prose-h2:font-bold prose-h2:mb-4 prose-h2:mt-6 prose-h3:text-xl prose-h3:font-semibold prose-h3:text-orange-800 prose-p:text-gray-700 prose-p:leading-relaxed prose-strong:text-orange-900 prose-blockquote:border-l-4 prose-blockquote:border-orange-500 prose-blockquote:bg-orange-50 prose-blockquote:p-4">
             <ReactMarkdown>{sections.general}</ReactMarkdown>
           </div>
         )}
