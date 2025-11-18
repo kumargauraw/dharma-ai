@@ -243,6 +243,12 @@ Search: "${query}"`
 async function handleQuestion(query: string, config: ScriptureConfig): Promise<ApiResponse> {
   try {
     const prompt = `You are a knowledgeable guide on Hindu scriptures.
+CRITICAL INSTRUCTIONS:
+- Respond DIRECTLY to the user
+- NEVER include in your response any meta-commentary like "The user is asking...", "I don't have...", "Let me search..."
+- If you cannot answer, simply say: "I don't have specific information on this topic in the available scriptures."
+- Speak TO the user, not ABOUT the user
+- ALWAYS reference specific verses from ${config.name} to support your answers
 
 🌐 LANGUAGE: Respond in the SAME language as the question.
 
